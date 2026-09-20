@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>冲压A线产线可视化大屏 · 运营分析报告</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif;background:#F0F2F5;color:#2C3E50;padding:24px;line-height:1.6}
+  .wrap{max-width:1180px;margin:0 auto}
+  .head{background:linear-gradient(135deg,#4A90D9 0%,#357ABD 100%);color:#fff;padding:30px 34px;border-radius:12px;margin-bottom:20px}
+  .head h1{font-size:25px;font-weight:600;margin-bottom:10px;letter-spacing:.5px}
+  .head .meta{font-size:13px;opacity:.9;line-height:1.9}
+  .head .tag{display:inline-block;background:rgba(255,255,255,.2);border-radius:4px;padding:2px 10px;font-size:12px;margin-right:8px}
+  .card{background:#fff;border-radius:10px;padding:24px 26px;margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .card h2{font-size:17px;font-weight:600;color:#2C3E50;margin-bottom:6px;padding-bottom:12px;border-bottom:2px solid #F0F2F5}
+  .card h2 .sub{font-size:12px;color:#95A2B0;font-weight:400;margin-left:8px}
+  .note{background:#F7FAFD;border-left:3px solid #4A90D9;padding:10px 14px;border-radius:4px;font-size:12.5px;color:#5A6B7B;margin:14px 0 0}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:14px;margin-bottom:18px}
+  .kpi{background:#fff;border-radius:10px;padding:18px 20px;box-shadow:0 2px 12px rgba(0,0,0,.06);border-top:3px solid #4A90D9}
+  .kpi .l{font-size:12.5px;color:#8A97A5;margin-bottom:6px}
+  .kpi .v{font-size:26px;font-weight:700;color:#2C3E50;letter-spacing:-.5px}
+  .kpi .v small{font-size:14px;font-weight:500;color:#95A2B0;margin-left:3px}
+  .kpi .d{font-size:11.5px;color:#95A2B0;margin-top:5px}
+  .kpi.b{border-top-color:#4A90D9}.kpi.g{border-top-color:#5CB85C}.kpi.o{border-top-color:#F0AD4E}
+  .kpi.r{border-top-color:#D9534F}.kpi.p{border-top-color:#9B59B6}.kpi.t{border-top-color:#00A0A0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .insight{background:#FFFBF3;border-left:3px solid #F0AD4E;border-radius:4px;padding:12px 16px;font-size:13px;color:#6B5B3E;margin-top:16px}
+  .insight b{color:#B8860B}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  th{background:#F7FAFD;color:#5A6B7B;font-weight:600;text-align:left;padding:10px 12px;border-bottom:2px solid #E8EFF5;font-size:12.5px}
+  td{padding:9px 12px;border-bottom:1px solid #F0F2F5;color:#4A5568}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#FAFCFE}
+  ul.adv{list-style:none;margin-top:4px}
+  ul.adv li{position:relative;padding:11px 0 11px 30px;border-bottom:1px dashed #EDF1F5;font-size:13.5px;color:#4A5568}
+  ul.adv li:last-child{border-bottom:none}
+  ul.adv li::before{content:'';position:absolute;left:8px;top:18px;width:7px;height:7px;border-radius:50%;background:#4A90D9}
+  ul.adv li b{color:#2C3E50}
+  ul.adv li .lv{display:inline-block;font-size:11px;padding:1px 7px;border-radius:3px;margin-right:7px;vertical-align:1px}
+  .lv.p0{background:#FDEDEC;color:#D9534F}.lv.p1{background:#FFF7E6;color:#D68910}.lv.p2{background:#EAF4FB;color:#357ABD}
+  .foot{text-align:center;font-size:12px;color:#9AA7B4;padding:20px 0 8px;line-height:1.9}
+  .legend{display:flex;flex-wrap:wrap;gap:22px;margin-top:12px;font-size:12.5px;color:#5A6B7B}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <h1>冲压A线产线可视化大屏 · 运营分析报告</h1>
+    <div class="meta">
+      <span class="tag">数据源</span>总部工厂 / 设备科 / 冲压车间 / 产线可视化大屏A线<br>
+      <span class="tag">快照时间</span>2026-09-16 11:44（看板实时数据，随生产持续刷新）<br>
+      <span class="tag">班次</span>早班（07:15 开班） &nbsp;·&nbsp; <span class="tag">在岗</span>实际 7 / 计划 8 人 &nbsp;·&nbsp; <span class="tag">年度第 259 天</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>分析口径说明<span class="sub">阅读前请先了解</span></h2>
+    <div style="font-size:13px;color:#5A6B7B">
+      <p>· <b>效率类指标（OEE / 稼动率 / 可动率 / 即时达成率）</b>由系统按"有排产时段"计算，反映设备与节拍状态，<b>不含"未排产"的空档</b>。</p>
+      <p>· <b>计划达成率</b>为实际产量与当日计划产量的比值，反映当日排产目标完成进度，与效率指标口径不同。</p>
+      <p>· <b>状态时长</b>统计区间为 07:15 ~ 11:44:03（269 分钟），即当前早班开班至数据快照时刻，已剔除跨班边界记录。</p>
+      <p>· <b>每小时产量</b>观察窗为 09-15 22:00 ~ 09-16 11:00，跨 09-15 中班尾段与 09-16 早班，共 14 个时点。</p>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi b"><div class="l">产线综合 OEE</div><div class="v">84%</div><div class="d">设备综合效率</div></div>
+    <div class="kpi b"><div class="l">生产稼动率</div><div class="v">86%</div><div class="d">实际生产时间占负荷时间</div></div>
+    <div class="kpi g"><div class="l">设备可动率</div><div class="v">100%</div><div class="d">设备可用状态良好</div></div>
+    <div class="kpi t"><div class="l">即时达成率</div><div class="v">88.4%</div><div class="d">当前节拍达成水平</div></div>
+    <div class="kpi r"><div class="l">当日计划达成率</div><div class="v">36%</div><div class="d">进度指标，非效率指标</div></div>
+    <div class="kpi o"><div class="l">实际 / 计划产量</div><div class="v">1,538<small>/ 4,280</small></div><div class="d">早班累计 / 当日计划</div></div>
+  </div>
+
+  <div class="card">
+    <h2>一、核心效率指标达成水平<span class="sub">0–100% 刻度</span></h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:18px">
+      <div>
+        <div style="margin-bottom:18px">
+  <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+    <span style="font-size:13px;color:#4A5568;font-weight:600">设备可动率</span>
+    <span style="font-size:15px;color:#5CB85C;font-weight:700">100%</span>
+  </div>
+  <div style="background:#F2F5F8;border-radius:5px;height:12px;overflow:hidden">
+    <div style="width:100%;height:100%;background:#5CB85C;border-radius:5px"></div>
+  </div>
+</div><div style="margin-bottom:18px">
+  <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+    <span style="font-size:13px;color:#4A5568;font-weight:600">生产稼动率</span>
+    <span style="font-size:15px;color:#4A90D9;font-weight:700">86%</span>
+  </div>
+  <div style="background:#F2F5F8;border-radius:5px;height:12px;overflow:hidden">
+    <div style="width:86%;height:100%;background:#4A90D9;border-radius:5px"></div>
+  </div>
+</div><div style="margin-bottom:18px">
+  <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+    <span style="font-size:13px;color:#4A5568;font-weight:600">综合 OEE</span>
+    <span style="font-size:15px;color:#4A90D9;font-weight:700">84%</span>
+  </div>
+  <div style="background:#F2F5F8;border-radius:5px;height:12px;overflow:hidden">
+    <div style="width:84%;height:100%;background:#4A90D9;border-radius:5px"></div>
+  </div>
+</div><div style="margin-bottom:18px">
+  <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+    <span style="font-size:13px;color:#4A5568;font-weight:600">即时达成率</span>
+    <span style="font-size:15px;color:#00A0A0;font-weight:700">88.4%</span>
+  </div>
+  <div style="background:#F2F5F8;border-radius:5px;height:12px;overflow:hidden">
+    <div style="width:88.4%;height:100%;background:#00A0A0;border-radius:5px"></div>
+  </div>
+</div><div style="margin-bottom:18px">
+  <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+    <span style="font-size:13px;color:#4A5568;font-weight:600">计划达成率</span>
+    <span style="font-size:15px;color:#D9534F;font-weight:700">36%</span>
+  </div>
+  <div style="background:#F2F5F8;border-radius:5px;height:12px;overflow:hidden">
+    <div style="width:36%;height:100%;background:#D9534F;border-radius:5px"></div>
+  </div>
+</div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <div style="background:#F7FAFD;border-radius:8px;padding:18px 20px">
+          <div style="font-size:13px;color:#8A97A5;margin-bottom:8px">指标健康度速览</div>
+          <div style="font-size:13.5px;color:#4A5568;line-height:2">
+            设备可动率 <b style="color:#5CB85C">100%</b> —— 无设备故障停机<br>
+            生产稼动率 <b style="color:#4A90D9">86%</b> —— 处于较好水平<br>
+            综合 OEE <b style="color:#4A90D9">84%</b> —— 高于行业基准(75%)<br>
+            即时达成率 <b style="color:#00A0A0">88.4%</b> —— 节拍仍有提升空间<br>
+            计划达成率 <b style="color:#D9534F">36%</b> —— 进度严重滞后
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="insight"><b>关键矛盾：</b>效率指标全线优良（OEE 84%、稼动率 86%、可动率 100%），但当日计划达成率仅 36%。两者并不矛盾 —— <b>效率指标衡量的是"设备转起来时干得好不好"，而计划达成率衡量的是"一天到底产出了多少"</b>。当前 36% 的达成率主要由 <b>5:00–6:00 近 1 小时的停产空窗</b> 与 <b>上午多轮停机</b> 造成。</div>
+  </div>
+
+  <div class="card">
+    <h2>二、每小时产量 vs 目标产量<span class="sub">观察窗 09-15 22:00 ~ 09-16 11:00</span></h2>
+    <div style="margin-top:14px"><svg viewBox="0 0 1120 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><line x1="72" y1="322.0" x2="1092" y2="322.0" stroke="#EAEEF3" stroke-width="1" stroke-dasharray="4,4"/><text x="62" y="326.0" text-anchor="end" font-size="11" fill="#95A2B0">0</text><line x1="72" y1="260.2" x2="1092" y2="260.2" stroke="#EAEEF3" stroke-width="1" stroke-dasharray="4,4"/><text x="62" y="264.2" text-anchor="end" font-size="11" fill="#95A2B0">100</text><line x1="72" y1="198.4" x2="1092" y2="198.4" stroke="#EAEEF3" stroke-width="1" stroke-dasharray="4,4"/><text x="62" y="202.4" text-anchor="end" font-size="11" fill="#95A2B0">200</text><line x1="72" y1="136.7" x2="1092" y2="136.7" stroke="#EAEEF3" stroke-width="1" stroke-dasharray="4,4"/><text x="62" y="140.7" text-anchor="end" font-size="11" fill="#95A2B0">300</text><line x1="72" y1="74.9" x2="1092" y2="74.9" stroke="#EAEEF3" stroke-width="1" stroke-dasharray="4,4"/><text x="62" y="78.9" text-anchor="end" font-size="11" fill="#95A2B0">400</text><line x1="72" y1="322" x2="1092" y2="322" stroke="#CBD5E0" stroke-width="1"/><rect x="83.4" y="73.0" width="21" height="249.0" rx="2" fill="#DCE4EC"/><rect x="106.4" y="181.8" width="21" height="140.2" rx="2" fill="#F0AD4E"/><text x="93.9" y="175.8" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">227</text><text x="108.4" y="340" text-anchor="middle" font-size="11" fill="#7A8794">00:00</text><text x="108.4" y="356" text-anchor="middle" font-size="12" fill="#D9534F" font-weight="700">✗</text><rect x="156.3" y="73.0" width="21" height="249.0" rx="2" fill="#DCE4EC"/><rect x="179.3" y="68.7" width="21" height="253.3" rx="2" fill="#4A90D9"/><text x="166.8" y="62.7" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">410</text><text x="181.3" y="340" text-anchor="middle" font-size="11" fill="#7A8794">01:00</text><text x="181.3" y="356" text-anchor="middle" font-size="12" fill="#5CB85C" font-weight="700">✓</text><rect x="229.1" y="73.0" width="21" height="249.0" rx="2" fill="#DCE4EC"/><rect x="252.1" y="74.9" width="21" height="247.1" rx="2" fill="#F0AD4E"/><text x="239.6" y="68.9" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">400</text><text x="254.1" y="340" text-anchor="middle" font-size="11" fill="#7A8794">02:00</text><text x="254.1" y="356" text-anchor="middle" font-size="12" fill="#D9534F" font-weight="700">✗</text><rect x="302.0" y="114.4" width="21" height="207.6" rx="2" fill="#DCE4EC"/><rect x="325.0" y="92.8" width="21" height="229.2" rx="2" fill="#4A90D9"/><text x="312.5" y="86.8" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">371</text><text x="327.0" y="340" text-anchor="middle" font-size="11" fill="#7A8794">03:00</text><text x="327.0" y="356" text-anchor="middle" font-size="12" fill="#5CB85C" font-weight="700">✓</text><rect x="374.9" y="73.0" width="21" height="249.0" rx="2" fill="#DCE4EC"/><rect x="397.9" y="87.9" width="21" height="234.1" rx="2" fill="#F0AD4E"/><text x="385.4" y="81.9" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">379</text><text x="399.9" y="340" text-anchor="middle" font-size="11" fill="#7A8794">04:00</text><text x="399.9" y="356" text-anchor="middle" font-size="12" fill="#D9534F" font-weight="700">✗</text><rect x="447.7" y="73.0" width="21" height="249.0" rx="2" fill="#DCE4EC"/><rect x="470.7" y="315.2" width="21" height="6.8" rx="2" fill="#F0AD4E"/><text x="458.2" y="309.2" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">11</text><text x="472.7" y="340" text-anchor="middle" font-size="11" fill="#7A8794">05:00</text><text x="472.7" y="356" text-anchor="middle" font-size="12" fill="#D9534F" font-weight="700">✗</text><rect x="520.6" y="73.0" width="21" height="249.0" rx="2" fill="#DCE4EC"/><rect x="543.6" y="322.0" width="21" height="0.0" rx="2" fill="#F0AD4E"/><text x="545.6" y="340" text-anchor="middle" font-size="11" fill="#7A8794">06:00</text><text x="545.6" y="356" text-anchor="middle" font-size="12" fill="#D9534F" font-weight="700">✗</text><rect x="593.4" y="134.8" width="21" height="187.2" rx="2" fill="#DCE4EC"/><rect x="616.4" y="102.1" width="21" height="219.9" rx="2" fill="#4A90D9"/><text x="603.9" y="96.1" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">356</text><text x="618.4" y="340" text-anchor="middle" font-size="11" fill="#7A8794">07:00</text><text x="618.4" y="356" text-anchor="middle" font-size="12" fill="#5CB85C" font-weight="700">✓</text><rect x="666.3" y="73.0" width="21" height="249.0" rx="2" fill="#DCE4EC"/><rect x="689.3" y="91.0" width="21" height="231.0" rx="2" fill="#F0AD4E"/><text x="676.8" y="85.0" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">374</text><text x="691.3" y="340" text-anchor="middle" font-size="11" fill="#7A8794">08:00</text><text x="691.3" y="356" text-anchor="middle" font-size="12" fill="#D9534F" font-weight="700">✗</text><rect x="739.1" y="114.4" width="21" height="207.6" rx="2" fill="#DCE4EC"/><rect x="762.1" y="89.7" width="21" height="232.3" rx="2" fill="#4A90D9"/><text x="749.6" y="83.7" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">376</text><text x="764.1" y="340" text-anchor="middle" font-size="11" fill="#7A8794">09:00</text><text x="764.1" y="356" text-anchor="middle" font-size="12" fill="#5CB85C" font-weight="700">✓</text><rect x="812.0" y="73.0" width="21" height="249.0" rx="2" fill="#DCE4EC"/><rect x="835.0" y="216.4" width="21" height="105.6" rx="2" fill="#F0AD4E"/><text x="822.5" y="210.4" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">171</text><text x="837.0" y="340" text-anchor="middle" font-size="11" fill="#7A8794">10:00</text><text x="837.0" y="356" text-anchor="middle" font-size="12" fill="#D9534F" font-weight="700">✗</text><rect x="884.9" y="155.8" width="21" height="166.2" rx="2" fill="#DCE4EC"/><rect x="907.9" y="186.1" width="21" height="135.9" rx="2" fill="#F0AD4E"/><text x="895.4" y="180.1" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">220</text><text x="909.9" y="340" text-anchor="middle" font-size="11" fill="#7A8794">11:00</text><text x="909.9" y="356" text-anchor="middle" font-size="12" fill="#D9534F" font-weight="700">✗</text><rect x="957.7" y="114.4" width="21" height="207.6" rx="2" fill="#DCE4EC"/><rect x="980.7" y="318.9" width="21" height="3.1" rx="2" fill="#F0AD4E"/><text x="968.2" y="312.9" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">5</text><text x="982.7" y="340" text-anchor="middle" font-size="11" fill="#7A8794">22:00</text><text x="982.7" y="356" text-anchor="middle" font-size="12" fill="#D9534F" font-weight="700">✗</text><rect x="1030.6" y="197.2" width="21" height="124.8" rx="2" fill="#DCE4EC"/><rect x="1053.6" y="76.7" width="21" height="245.3" rx="2" fill="#4A90D9"/><text x="1041.1" y="70.7" text-anchor="middle" font-size="11" fill="#4A5568" font-weight="600">397</text><text x="1055.6" y="340" text-anchor="middle" font-size="11" fill="#7A8794">23:00</text><text x="1055.6" y="356" text-anchor="middle" font-size="12" fill="#5CB85C" font-weight="700">✓</text><rect x="72" y="12" width="12" height="12" rx="2" fill="#4A90D9"/><text x="90" y="22" font-size="12" fill="#4A5568">实际产量（达标）</text><rect x="212" y="12" width="12" height="12" rx="2" fill="#F0AD4E"/><text x="230" y="22" font-size="12" fill="#4A5568">实际产量（未达标）</text><rect x="372" y="12" width="12" height="12" rx="2" fill="#DCE4EC"/><text x="390" y="22" font-size="12" fill="#4A5568">目标产量</text></svg></div>
+    <div class="legend">
+      <span><i style="background:#5CB85C"></i>✓ 达标</span>
+      <span><i style="background:#D9534F"></i>✗ 未达标</span>
+      <span><i style="background:#DCE4EC"></i>目标产量</span>
+    </div>
+    <div class="insight"><b>达标情况：</b>观察窗内 14 个时点中仅 <b>5 个达标（36%）</b>。目标合计 5,006 件，实际 3,697 件，缺口 <b>1,309 件</b>。<br>
+    <b>两个明显低谷：</b>① 05:00 仅产出 11 件（目标 403），06:00 完全无数据 —— 早班交接前的空窗；② 10:00 产出 171 件（目标 403），与 10:13–10:35 的 22 分钟停机直接对应。<br>
+    <b>亮点：</b>01:00 产出 410 件为全天峰值，23:00、03:00、07:00、09:00 均超额完成目标，说明设备具备达标能力，问题在于<b>稳定性而非产能上限</b>。</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>三、产线状态时长分布<span class="sub">07:15 ~ 11:44:03</span></h2>
+      <div style="display:flex;align-items:center;gap:26px;margin-top:16px;flex-wrap:wrap">
+        <div style="flex:0 0 220px"><svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;height:auto"><circle cx="150" cy="150" r="76" fill="none" stroke="#EEF2F6" stroke-width="30"/><circle cx="150" cy="150" r="76" fill="none" stroke="#4A90D9" stroke-width="30" stroke-dasharray="383.28 94.24" stroke-dashoffset="-0.00" transform="rotate(-90 150 150)"/><circle cx="150" cy="150" r="76" fill="none" stroke="#D9534F" stroke-width="30" stroke-dasharray="67.06 410.46" stroke-dashoffset="-383.28" transform="rotate(-90 150 150)"/><circle cx="150" cy="150" r="76" fill="none" stroke="#B8C2CC" stroke-width="30" stroke-dasharray="26.53 450.99" stroke-dashoffset="-450.34" transform="rotate(-90 150 150)"/><text x="150" y="142" text-anchor="middle" font-size="13" fill="#8A97A5">生产占比</text><text x="150" y="176" text-anchor="middle" font-size="30" font-weight="700" fill="#2C3E50">80.3%</text></svg></div>
+        <div style="flex:1;min-width:180px">
+          <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
+      <span style="color:#4A5568">产线生产中</span><span style="font-weight:700;color:#4A90D9">215.9 分钟</span></div>
+      <div style="background:#F2F5F8;border-radius:5px;height:11px"><div style="width:80.3%;height:100%;background:#4A90D9;border-radius:5px"></div></div></div><div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
+      <span style="color:#4A5568">产线异常中</span><span style="font-weight:700;color:#D9534F">37.8 分钟</span></div>
+      <div style="background:#F2F5F8;border-radius:5px;height:11px"><div style="width:14.0%;height:100%;background:#D9534F;border-radius:5px"></div></div></div><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
+      <span style="color:#4A5568">产线休息中</span><span style="font-weight:700;color:#8A97A5">14.9 分钟</span></div>
+      <div style="background:#F2F5F8;border-radius:5px;height:11px"><div style="width:5.6%;height:100%;background:#B8C2CC;border-radius:5px"></div></div></div>
+        </div>
+      </div>
+      <div class="insight">异常时间占比 <b>14.0%</b>，是停机损失的主要来源。按 269 分钟计，<b>异常累计 38 分钟</b>，若压缩至 5% 以内可挽回约 <b>24 分钟</b>有效生产时间。</div>
+    </div>
+
+    <div class="card">
+      <h2>四、停机原因构成<span class="sub">系统分类统计</span></h2>
+      <div style="margin-top:20px"><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+  <div style="width:70px;font-size:13px;color:#4A5568;text-align:right;flex:none">模切</div>
+  <div style="flex:1;background:#F2F5F8;border-radius:6px;height:26px;position:relative">
+    <div style="width:620px;max-width:100%;height:100%;background:#4A90D9;border-radius:6px"></div>
+    <div style="position:absolute;left:10px;top:4px;font-size:12px;color:#fff;font-weight:600">25分钟</div>
+  </div>
+  <div style="width:52px;font-size:12px;color:#95A2B0;flex:none">67.6%</div>
+</div><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+  <div style="width:70px;font-size:13px;color:#4A5568;text-align:right;flex:none">其他</div>
+  <div style="flex:1;background:#F2F5F8;border-radius:6px;height:26px;position:relative">
+    <div style="width:223px;max-width:100%;height:100%;background:#F0AD4E;border-radius:6px"></div>
+    <div style="position:absolute;left:10px;top:4px;font-size:12px;color:#fff;font-weight:600">9分钟</div>
+  </div>
+  <div style="width:52px;font-size:12px;color:#95A2B0;flex:none">24.3%</div>
+</div><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+  <div style="width:70px;font-size:13px;color:#4A5568;text-align:right;flex:none">设备</div>
+  <div style="flex:1;background:#F2F5F8;border-radius:6px;height:26px;position:relative">
+    <div style="width:74px;max-width:100%;height:100%;background:#00A0A0;border-radius:6px"></div>
+    <div style="position:absolute;left:10px;top:4px;font-size:12px;color:#fff;font-weight:600">3分钟</div>
+  </div>
+  <div style="width:52px;font-size:12px;color:#95A2B0;flex:none">8.1%</div>
+</div></div>
+      <div class="insight"><b>模切</b>以 2 次、25 分钟占据停机时长榜首（占比 67.6%），是单点损失最集中的原因；<b>其他</b>类虽有 17 次但每次极短，多为信号抖动。品质、物流、模具、计停、工程五类均为 0，说明上述环节当日未造成停机。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>五、产线状态时间轴<span class="sub">早班 07:15 起逐段状态还原</span></h2>
+    <div style="margin-top:16px"><svg viewBox="0 0 1120 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><rect x="60" y="90" width="1032" height="44" rx="4" fill="#F2F5F8"/><rect x="60.00" y="90" width="1.20" height="44" fill="#B8C2CC"/><rect x="60.00" y="90" width="73.77" height="44" fill="#4A90D9"/><rect x="133.77" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="134.60" y="90" width="275.40" height="44" fill="#4A90D9"/><rect x="410.01" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="410.97" y="90" width="24.68" height="44" fill="#D9534F"/><rect x="435.64" y="90" width="3.07" height="44" fill="#D9534F"/><rect x="438.71" y="90" width="1.20" height="44" fill="#4A90D9"/><rect x="439.74" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="439.80" y="90" width="2.43" height="44" fill="#4A90D9"/><rect x="442.23" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="442.49" y="90" width="2.11" height="44" fill="#4A90D9"/><rect x="444.59" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="444.98" y="90" width="131.44" height="44" fill="#4A90D9"/><rect x="576.42" y="90" width="41.81" height="44" fill="#B8C2CC"/><rect x="618.22" y="90" width="62.71" height="44" fill="#4A90D9"/><rect x="680.94" y="90" width="3.26" height="44" fill="#D9534F"/><rect x="684.20" y="90" width="1.20" height="44" fill="#4A90D9"/><rect x="684.39" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="684.97" y="90" width="56.26" height="44" fill="#4A90D9"/><rect x="741.22" y="90" width="1.79" height="44" fill="#D9534F"/><rect x="743.01" y="90" width="71.41" height="44" fill="#D9534F"/><rect x="814.42" y="90" width="13.30" height="44" fill="#D9534F"/><rect x="827.72" y="90" width="5.05" height="44" fill="#4A90D9"/><rect x="832.77" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="833.28" y="90" width="1.20" height="44" fill="#4A90D9"/><rect x="833.66" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="833.92" y="90" width="13.81" height="44" fill="#4A90D9"/><rect x="847.73" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="848.05" y="90" width="8.63" height="44" fill="#4A90D9"/><rect x="856.68" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="857.00" y="90" width="27.68" height="44" fill="#4A90D9"/><rect x="884.68" y="90" width="9.08" height="44" fill="#D9534F"/><rect x="893.76" y="90" width="1.20" height="44" fill="#4A90D9"/><rect x="894.27" y="90" width="1.20" height="44" fill="#D9534F"/><rect x="894.33" y="90" width="70.32" height="44" fill="#4A90D9"/><rect x="964.65" y="90" width="9.78" height="44" fill="#D9534F"/><rect x="974.44" y="90" width="96.60" height="44" fill="#4A90D9"/><rect x="1071.03" y="90" width="4.03" height="44" fill="#D9534F"/><rect x="1075.06" y="90" width="15.53" height="44" fill="#B8C2CC"/><line x1="60.0" y1="82" x2="60.0" y2="142" stroke="#B8C2CC" stroke-width="1"/><text x="60.0" y="158" text-anchor="middle" font-size="11" fill="#7A8794">07:15</text><line x1="232.6" y1="82" x2="232.6" y2="142" stroke="#B8C2CC" stroke-width="1"/><text x="232.6" y="158" text-anchor="middle" font-size="11" fill="#7A8794">08:00</text><line x1="462.8" y1="82" x2="462.8" y2="142" stroke="#B8C2CC" stroke-width="1"/><text x="462.8" y="158" text-anchor="middle" font-size="11" fill="#7A8794">09:00</text><line x1="692.9" y1="82" x2="692.9" y2="142" stroke="#B8C2CC" stroke-width="1"/><text x="692.9" y="158" text-anchor="middle" font-size="11" fill="#7A8794">10:00</text><line x1="923.0" y1="82" x2="923.0" y2="142" stroke="#B8C2CC" stroke-width="1"/><text x="923.0" y="158" text-anchor="middle" font-size="11" fill="#7A8794">11:00</text><line x1="1091.8" y1="82" x2="1091.8" y2="142" stroke="#B8C2CC" stroke-width="1"/><text x="1091.8" y="158" text-anchor="middle" font-size="11" fill="#7A8794">11:44</text><line x1="780.1" y1="80" x2="780.1" y2="50" stroke="#D9534F" stroke-width="1.5"/><text x="780.1" y="44" text-anchor="middle" font-size="12" fill="#D9534F" font-weight="600">最长停机 19分钟</text><rect x="60" y="30" width="12" height="12" rx="2" fill="#4A90D9"/><text x="78" y="40" font-size="12" fill="#4A5568">生产中</text><rect x="160" y="30" width="12" height="12" rx="2" fill="#D9534F"/><text x="178" y="40" font-size="12" fill="#4A5568">异常中</text><rect x="260" y="30" width="12" height="12" rx="2" fill="#B8C2CC"/><text x="278" y="40" font-size="12" fill="#4A5568">休息中</text></svg></div>
+    <div class="insight"><b>运行节律：</b>早班开班后共形成 <b>17 个生产段</b>，平均每段仅 12.7 分钟，最长连续生产 72 分钟（07:34–08:46）。生产被频繁打断，<b>碎片化明显</b>。<br>
+    <b>异常结构：</b>全天共 20 段异常，其中 <b>14 段不足 1 分钟（占比 70%）属信号瞬时抖动</b>，真正造成损失的仅 6 段、合计 34 分钟。建议区分"信号抖动"与"真实停机"两类事件，避免报警疲劳。</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>六、班次产量对比<span class="sub">系统班次口径</span></h2>
+      <div style="margin-top:20px"><div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+  <div style="width:118px;font-size:13px;color:#4A5568;flex:none">早班（09-16）</div>
+  <div style="background:#F2F5F8;border-radius:6px;height:30px;flex:1">
+    <div style="width:246px;max-width:100%;height:100%;background:#4A90D9;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;box-sizing:border-box">
+      <span style="color:#fff;font-size:13px;font-weight:600">1,538</span>
+    </div>
+  </div>
+</div><div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+  <div style="width:118px;font-size:13px;color:#4A5568;flex:none">中班（09-15）</div>
+  <div style="background:#F2F5F8;border-radius:6px;height:30px;flex:1">
+    <div style="width:560px;max-width:100%;height:100%;background:#00A0A0;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;box-sizing:border-box">
+      <span style="color:#fff;font-size:13px;font-weight:600">3,506</span>
+    </div>
+  </div>
+</div></div>
+      <div class="insight">中班产量（3,506 件）为早班（1,538 件）的 <b>2.28 倍</b>，且早班数据为<b>截至快照时刻的累计值（尚未结束）</b>，两个班次不可直接横向比较。按当前早班进度推算，需重点关注剩余工时能否追平当日 4,280 件的计划量。</div>
+    </div>
+
+    <div class="card">
+      <h2>七、异常停机明细<span class="sub">时长 ≥ 1 分钟的有效损失</span></h2>
+      <table>
+        <thead><tr><th>开始时间</th><th>结束时间</th><th>持续</th><th>性质</th></tr></thead>
+        <tbody><tr>
+  <td>10:13:26</td><td>10:32:03</td>
+  <td style="color:#D9534F;font-weight:600">19 分钟</td>
+  <td>有效停机损失</td>
+</tr><tr>
+  <td>08:46:52</td><td>08:53:18</td>
+  <td style="color:#D9534F;font-weight:600">6 分钟</td>
+  <td>有效停机损失</td>
+</tr><tr>
+  <td>10:32:03</td><td>10:35:31</td>
+  <td style="color:#D9534F;font-weight:600">3 分钟</td>
+  <td>有效停机损失</td>
+</tr><tr>
+  <td>11:11:13</td><td>11:13:46</td>
+  <td style="color:#D9534F;font-weight:600">3 分钟</td>
+  <td>有效停机损失</td>
+</tr><tr>
+  <td>10:50:22</td><td>10:52:44</td>
+  <td style="color:#D9534F;font-weight:600">2 分钟</td>
+  <td>有效停机损失</td>
+</tr><tr>
+  <td>11:38:57</td><td>11:40:00</td>
+  <td style="color:#D9534F;font-weight:600">1 分钟</td>
+  <td>有效停机损失</td>
+</tr></tbody>
+      </table>
+      <div class="insight">10:13–10:35 的 <b>22 分钟</b>中断为当日最大单点损失（19 分钟 + 3 分钟连续段），恰好落在 10:00 时段产量低谷，两者互为印证。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>八、模具产出质量明细<span class="sub">当班在产模具</span></h2>
+    <table>
+      <thead><tr>
+        <th>模具号</th><th>车型</th><th>零件号</th><th>理论节拍</th><th>实际节拍</th>
+        <th>实际/理论</th><th>单组</th><th>平均</th><th>产量</th>
+      </tr></thead>
+      <tbody><tr>
+  <td style="font-weight:600">165</td><td>A5R</td>
+  <td style="font-size:12px;color:#6B7A88">4030270</td>
+  <td>8.2</td><td>8.18</td>
+  <td style="color:#5CB85C;font-weight:600">99.8%</td>
+  <td>1.0</td><td>1.0</td>
+  <td style="font-weight:600;color:#2C3E50">735</td>
+</tr><tr>
+  <td style="font-weight:600">25</td><td>2JA</td>
+  <td style="font-size:12px;color:#6B7A88">64331/731</td>
+  <td>8.1</td><td>8.33</td>
+  <td style="color:#5CB85C;font-weight:600">102.8%</td>
+  <td>1.03</td><td>1.01</td>
+  <td style="font-weight:600;color:#2C3E50">499</td>
+</tr><tr>
+  <td style="font-weight:600">120</td><td>2QD</td>
+  <td style="font-size:12px;color:#6B7A88">643/701-30A -A000-H1</td>
+  <td>7.5</td><td>6.86</td>
+  <td style="color:#D9534F;font-weight:600">91.5%</td>
+  <td>0.91</td><td>0.98</td>
+  <td style="font-weight:600;color:#2C3E50">304</td>
+</tr></tbody>
+    </table>
+    <div class="insight"><b>模具 165（A5R）：</b>实际节拍 8.18 件/分钟 &gt; 理论 8.2 的 99.8%，单组与平均均为 1.0，是当日最稳定的模具，贡献产量 735 件（占早班 47.8%）。<br>
+    <b>模具 120（2QD）：</b>实际节拍 6.86，仅为理论的 <b>91.5%</b>，单组 0.91 明显偏低，是三副模具中唯一未达理论值 95% 的，贡献产量 304 件。建议排查该模具的送料、定位或换模后调试环节。</div>
+  </div>
+
+  <div class="card">
+    <h2>九、综合洞察</h2>
+    <div style="font-size:13.5px;color:#4A5568;line-height:2.05;margin-top:10px">
+      <p><b>1. 设备能力不是瓶颈，稳定性才是。</b>可动率 100%、OEE 84%、多个小时超额达标，证明产线具备完成计划的能力；但 14.0% 的异常时间与 17 个碎片化生产段，说明<b>产出被频繁中断而非被产能限制</b>。</p>
+      <p><b>2. 达成率 36% 需要区分"进度"与"能力"。</b>早班尚未结束，36% 是进度快照；但结合 05:00–06:00 的空窗与 10:00 的低谷，若按当前节奏，当日计划存在明显缺口风险。</p>
+      <p><b>3. 停机损失高度集中。</b>25 分钟的"模切"类停机占全部停机时长近七成，是<b>投入产出比最高的改善点</b>；而 14 段不足 1 分钟的异常属信号层抖动，不应与真实停机混为一谈。</p>
+      <p><b>4. 质量与材料指标表现极佳。</b>材料利用率 100%、计算列指标 99.97% / 99.8%，未出现质量类停机 —— <b>当日效率损失几乎全部来自时间维度，而非质量维度</b>。</p>
+      <p><b>5. 人员出勤存在 1 人缺口。</b>计划出勤 8 人、实际 7 人，虽未直接对应停机记录，但在换模、异常处置等环节可能拉长响应时间，建议关注其与 20 次异常处置时长的关联。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>十、行动建议</h2>
+    <ul class="adv">
+      <li><span class="lv p0">高优</span><b>专项攻克"模切"停机。</b>针对当班 2 次共 25 分钟的模切停机，调取 PLC 报警日志定位具体工位与触发条件，形成"模切停机 5Why 分析"闭环。</li>
+      <li><span class="lv p0">高优</span><b>补齐 5:00–6:00 排产空窗。</b>该时段连续近 1 小时无产出（05:00 仅 11 件、06:00 无记录），需与计划科确认是换班安排、模具切换还是排产缺口，若属可排产时段则直接转化为日产能。</li>
+      <li><span class="lv p1">中优</span><b>建立异常分级机制。</b>20 段异常中 14 段不足 1 分钟，建议在采集层设置持续时间阈值（如 ≥60 秒才计入停机统计），并单独归集"瞬时抖动"用于信号质量分析。</li>
+      <li><span class="lv p1">中优</span><b>核查模具 120（2QD）节拍偏差。</b>实际节拍 6.86 仅为理论 7.5 的 91.5%，低于 95% 预警线，建议检查模具状态、送料机构与操作节拍。</li>
+      <li><span class="lv p1">中优</span><b>对 10:13–10:35 的 22 分钟停机做专项复盘。</b>这是当日最大单点损失，需明确停机开始时间、处置响应时间与恢复时间三段耗时。</li>
+      <li><span class="lv p2">一般</span><b>关注人员出勤缺口。</b>实际出勤 7 人 / 计划 8 人，建议评估缺勤对异常响应速度的影响，必要时安排替班。</li>
+      <li><span class="lv p2">一般</span><b>校准大屏指标口径。</b>建议在看板醒目位置标注"计划达成率为进度指标"及数据快照时间，避免使用者将 36% 误读为效率水平。</li>
+    </ul>
+  </div>
+
+  <div class="foot">
+    本报告基于永洪BI「产线可视化大屏A线」组件数据自动生成<br>
+    数据快照：2026-09-16 11:44 &nbsp;|&nbsp; 共解析 20 个数据组件 &nbsp;|&nbsp; 生成时间：2026-09-16 11:47
+  </div>
+
+</div>
+</body>
+</html>
