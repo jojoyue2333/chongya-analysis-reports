@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>冲压车间数据分析报告中心</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif;background:#F0F2F5;color:#2C3E50;padding:24px;line-height:1.6}
+  .wrap{max-width:1080px;margin:0 auto}
+  .head{background:linear-gradient(135deg,#4A90D9 0%,#357ABD 100%);color:#fff;padding:38px 36px;border-radius:14px;margin-bottom:24px}
+  .head h1{font-size:27px;font-weight:600;margin-bottom:12px;letter-spacing:.5px}
+  .head p{font-size:14px;opacity:.92;line-height:1.85}
+  .head .tag{display:inline-block;background:rgba(255,255,255,.2);border-radius:4px;padding:3px 11px;font-size:12.5px;margin-right:9px;margin-top:4px}
+  .sec-title{font-size:15px;font-weight:600;color:#5A6B7B;margin:28px 0 14px;padding-left:11px;border-left:3px solid #4A90D9}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+  .card{background:#fff;border-radius:12px;padding:24px 26px;box-shadow:0 2px 12px rgba(0,0,0,.06);text-decoration:none;color:inherit;display:block;transition:transform .18s ease,box-shadow .18s ease;border-top:3px solid #4A90D9}
+  .card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(74,144,217,.18)}
+  .card .ico{font-size:22px;margin-bottom:10px}
+  .card h3{font-size:16.5px;font-weight:600;color:#2C3E50;margin-bottom:9px}
+  .card p{font-size:13px;color:#7A8794;line-height:1.75;margin-bottom:14px}
+  .card .meta{font-size:12px;color:#A5B1BD;display:flex;gap:14px;flex-wrap:wrap;padding-top:12px;border-top:1px solid #F0F2F5}
+  .card .chips{margin-bottom:4px}
+  .chip{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:3px;background:#EAF4FB;color:#357ABD;margin-right:6px;margin-bottom:6px}
+  .chip.g{background:#EAF7EE;color:#3D8B4A}
+  .chip.o{background:#FEF6E8;color:#C77C0A}
+  .chip.r{background:#FDECEA;color:#C0392B}
+  .c-mold{border-top-color:#00A0A0}
+  .c-prod{border-top-color:#5CB85C}
+  .c-line{border-top-color:#F0AD4E}
+  .foot{text-align:center;font-size:12.5px;color:#9AA7B4;padding:34px 0 10px;line-height:2}
+  .note{background:#FFFBF3;border-left:3px solid #F0AD4E;border-radius:6px;padding:14px 18px;font-size:13px;color:#6B5B3E;margin-top:24px}
+  .note b{color:#B8860B}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <h1>冲压车间数据分析报告中心</h1>
+    <p>基于永洪BI平台数据自动生成的分析报告集合，覆盖库位管理、产线运营与生产数据三大方向。</p>
+    <div>
+      <span class="tag">数据源 · 永洪BI</span>
+      <span class="tag">4 份报告</span>
+      <span class="tag">更新于 2026-09-20</span>
+    </div>
+  </div>
+
+  <div class="sec-title">生产运营分析</div>
+  <div class="grid">
+
+    <a class="card c-prod" href="production-5lines.html">
+      <div class="ico">📊</div>
+      <h3>冲压五线生产数据汇总分析</h3>
+      <p>A/B/C/D/E 五条产线的产量、稼动率、OEE、设备可动率、停机与模具节拍横向对比，含每小时产量达成热力图。</p>
+      <div class="chips">
+        <span class="chip">5 条产线</span>
+        <span class="chip o">达成率 48.5%</span>
+        <span class="chip r">D线异常 31.4%</span>
+      </div>
+      <div class="meta"><span>73 个数据集</span><span>快照 09-16</span></div>
+    </a>
+
+    <a class="card c-line" href="line-a-dashboard.html">
+      <div class="ico">🏭</div>
+      <h3>冲压A线产线可视化大屏分析</h3>
+      <p>针对 A 线大屏的深度解析：核心效率指标、每小时产量对比、产线状态时间轴还原、停机原因与模具产出质量。</p>
+      <div class="chips">
+        <span class="chip">OEE 84%</span>
+        <span class="chip o">269 分钟状态还原</span>
+        <span class="chip g">可动率 100%</span>
+      </div>
+      <div class="meta"><span>87 个组件</span><span>快照 09-16</span></div>
+    </a>
+
+  </div>
+
+  <div class="sec-title">库位管理分析</div>
+  <div class="grid">
+
+    <a class="card c-mold" href="mold-location-5lines.html">
+      <div class="ico">📦</div>
+      <h3>冲压五线库位情况分析</h3>
+      <p>A–E 五线模具库位占用全景，覆盖 1470 个三层库位；揭示"下层满、上层空"的分层规律与各线连续可用区。</p>
+      <div class="chips">
+        <span class="chip">1470 个库位</span>
+        <span class="chip g">占用率 72.7%</span>
+        <span class="chip o">上层仅 27.8%</span>
+      </div>
+      <div class="meta"><span>含平面占用示意图</span><span>数据 09-16</span></div>
+    </a>
+
+    <a class="card c-mold" href="mold-location-line-a.html">
+      <div class="ico">🔧</div>
+      <h3>冲压A线库位专项分析</h3>
+      <p>A 线 189 个模具库位的占用结构拆解，识别空置位分布、车型分布与低位可用空间。</p>
+      <div class="chips">
+        <span class="chip">A线 189 位</span>
+        <span class="chip o">占用 75.1%</span>
+        <span class="chip">空置全在上层</span>
+      </div>
+      <div class="meta"><span>含库位平面图</span><span>数据 09-16</span></div>
+    </a>
+
+  </div>
+
+  <div class="note">
+    <b>说明：</b>本页所有报告均为独立 HTML 文件，图表以内联 SVG / CSS 绘制，<b>不依赖任何外部 CDN</b>，可离线打开。生产类报告为数据快照，数值随生产实时变化。
+  </div>
+
+  <div class="foot">
+    冲压车间数据分析报告中心 · 共 4 份报告<br>
+    数据来源：永洪BI 平台 · 报告生成时间 2026-09-20
+  </div>
+
+</div>
+</body>
+</html>
